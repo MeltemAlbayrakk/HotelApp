@@ -12,8 +12,8 @@ using Otelim.Context;
 namespace Otelim.Migrations
 {
     [DbContext(typeof(HotelContext))]
-    [Migration("20221223083551_creatingtable")]
-    partial class creatingtable
+    [Migration("20221225194656_firstmigration")]
+    partial class firstmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,26 +32,27 @@ namespace Otelim.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HotelId"), 1L, 1);
 
-                    b.Property<int>("AccTypeId")
-                        .HasColumnType("int");
-
                     b.Property<string>("HotelAddress")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HotelDescription")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HotelName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<float>("Point")
                         .HasColumnType("real");
 
-                    b.Property<float>("Price")
-                        .HasColumnType("real");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("smallmoney");
 
-                    b.Property<int>("ThemeId")
-                        .HasColumnType("int");
+                    b.Property<string>("ThemeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("HotelId");
 
@@ -67,7 +68,8 @@ namespace Otelim.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentTypeId"), 1L, 1);
 
                     b.Property<string>("PaymentTypeName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("PaymentTypeId");
 
@@ -88,16 +90,13 @@ namespace Otelim.Migrations
                     b.Property<DateTime>("ExitDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PaymentTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserFname")
+                    b.Property<string>("PaymentTypeId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("smallmoney");
 
-                    b.Property<string>("UserLname")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("numOfAdult")
@@ -117,7 +116,8 @@ namespace Otelim.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ThemeId"), 1L, 1);
 
                     b.Property<string>("ThemeName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("ThemeId");
 
@@ -133,19 +133,27 @@ namespace Otelim.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
 
                     b.Property<string>("UserEmail")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("UserFname")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int>("UserGender")
                         .HasColumnType("int");
 
                     b.Property<string>("UserLname")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("UserPassword")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(18)
+                        .HasColumnType("nvarchar(18)");
 
                     b.Property<string>("UserPhone")
                         .HasColumnType("nvarchar(max)");

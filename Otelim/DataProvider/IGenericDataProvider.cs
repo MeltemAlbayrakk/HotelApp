@@ -1,4 +1,6 @@
-﻿namespace Otelim.DataProvider
+﻿using Otelim.Models;
+
+namespace Otelim.DataProvider
 {
     public interface IGenericDataProvider<T> where T : class
     {

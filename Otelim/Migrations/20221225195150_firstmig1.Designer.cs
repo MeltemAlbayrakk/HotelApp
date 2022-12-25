@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Otelim.Context;
 
@@ -11,9 +12,10 @@ using Otelim.Context;
 namespace Otelim.Migrations
 {
     [DbContext(typeof(HotelContext))]
-    partial class HotelContextModelSnapshot : ModelSnapshot
+    [Migration("20221225195150_firstmig1")]
+    partial class firstmig1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,12 +50,11 @@ namespace Otelim.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("smallmoney");
 
-                    b.Property<int?>("ThemeId")
-                        .HasColumnType("int");
+                    b.Property<string>("ThemeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("HotelId");
-
-                    b.HasIndex("ThemeId");
 
                     b.ToTable("Hotels");
                 });
@@ -99,17 +100,12 @@ namespace Otelim.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId1")
-                        .HasColumnType("int");
-
                     b.Property<int>("numOfAdult")
                         .HasColumnType("int");
 
                     b.HasKey("ReservationId");
 
                     b.HasIndex("PaymentTypeId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Reservations");
                 });
@@ -152,9 +148,6 @@ namespace Otelim.Migrations
                     b.Property<int>("UserGender")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId1")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserLname")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -170,18 +163,7 @@ namespace Otelim.Migrations
 
                     b.HasKey("UserId");
 
-                    b.HasIndex("UserId1");
-
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Otelim.Models.Hotel", b =>
-                {
-                    b.HasOne("Otelim.Models.Theme", "Theme")
-                        .WithMany("hotels")
-                        .HasForeignKey("ThemeId");
-
-                    b.Navigation("Theme");
                 });
 
             modelBuilder.Entity("Otelim.Models.Reservation", b =>
@@ -192,37 +174,12 @@ namespace Otelim.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Otelim.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("PaymentType");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Otelim.Models.User", b =>
-                {
-                    b.HasOne("Otelim.Models.User", null)
-                        .WithMany("Users")
-                        .HasForeignKey("UserId1");
                 });
 
             modelBuilder.Entity("Otelim.Models.PaymentType", b =>
                 {
                     b.Navigation("reservations");
-                });
-
-            modelBuilder.Entity("Otelim.Models.Theme", b =>
-                {
-                    b.Navigation("hotels");
-                });
-
-            modelBuilder.Entity("Otelim.Models.User", b =>
-                {
-                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

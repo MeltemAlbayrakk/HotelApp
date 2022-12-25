@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Otelim.Migrations
 {
-    public partial class creatingtable : Migration
+    public partial class firstmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,13 +15,12 @@ namespace Otelim.Migrations
                 {
                     HotelId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    HotelName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HotelName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     HotelDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HotelAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AccTypeId = table.Column<int>(type: "int", nullable: false),
+                    HotelAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Point = table.Column<float>(type: "real", nullable: false),
-                    Price = table.Column<float>(type: "real", nullable: false),
-                    ThemeId = table.Column<int>(type: "int", nullable: false)
+                    Price = table.Column<decimal>(type: "smallmoney", nullable: false),
+                    ThemeId = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -34,7 +33,7 @@ namespace Otelim.Migrations
                 {
                     PaymentTypeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PaymentTypeName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    PaymentTypeName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -47,13 +46,12 @@ namespace Otelim.Migrations
                 {
                     ReservationId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    UserFname = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserLname = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     numOfAdult = table.Column<int>(type: "int", nullable: false),
                     ArrivalDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExitDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PaymentTypeId = table.Column<int>(type: "int", nullable: false)
+                    PaymentTypeId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price = table.Column<decimal>(type: "smallmoney", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -66,7 +64,7 @@ namespace Otelim.Migrations
                 {
                     ThemeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ThemeName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ThemeName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -79,11 +77,11 @@ namespace Otelim.Migrations
                 {
                     UserId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserFname = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserLname = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserFname = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    UserLname = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    UserEmail = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     UserPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserPassword = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserPassword = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: false),
                     UserGender = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

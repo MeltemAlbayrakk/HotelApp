@@ -8,7 +8,7 @@ namespace Otelim.Models
         [Key]
         [ForeignKey("UserId")]
         public int UserId { get; set; }
-        public ICollection<User> Users { get; set; }
+ 
 
         [StringLength(20)]
         [Required]

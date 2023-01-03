@@ -12,8 +12,8 @@ using Otelim.Context;
 namespace Otelim.Migrations
 {
     [DbContext(typeof(HotelContext))]
-    [Migration("20221225194656_firstmigration")]
-    partial class firstmigration
+    [Migration("20230103215923_initialTables")]
+    partial class initialTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,11 +50,12 @@ namespace Otelim.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("smallmoney");
 
-                    b.Property<string>("ThemeId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("ThemeId")
+                        .HasColumnType("int");
 
                     b.HasKey("HotelId");
+
+                    b.HasIndex("ThemeId");
 
                     b.ToTable("Hotels");
                 });
@@ -90,19 +91,29 @@ namespace Otelim.Migrations
                     b.Property<DateTime>("ExitDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("PaymentTypeId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("HotelId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PaymentTypeId")
+                        .IsRequired()
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("smallmoney");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
 
                     b.Property<int>("numOfAdult")
                         .HasColumnType("int");
 
                     b.HasKey("ReservationId");
+
+                    b.HasIndex("HotelId");
+
+                    b.HasIndex("PaymentTypeId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Reservations");
                 });
@@ -161,6 +172,48 @@ namespace Otelim.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Otelim.Models.Hotel", b =>
+                {
+                    b.HasOne("Otelim.Models.Theme", "Theme")
+                        .WithMany("Hotels")
+                        .HasForeignKey("ThemeId");
+
+                    b.Navigation("Theme");
+                });
+
+            modelBuilder.Entity("Otelim.Models.Reservation", b =>
+                {
+                    b.HasOne("Otelim.Models.Hotel", "Hotel")
+                        .WithMany()
+                        .HasForeignKey("HotelId");
+
+                    b.HasOne("Otelim.Models.PaymentType", "PaymentType")
+                        .WithMany("reservations")
+                        .HasForeignKey("PaymentTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Otelim.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Hotel");
+
+                    b.Navigation("PaymentType");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Otelim.Models.PaymentType", b =>
+                {
+                    b.Navigation("reservations");
+                });
+
+            modelBuilder.Entity("Otelim.Models.Theme", b =>
+                {
+                    b.Navigation("Hotels");
                 });
 #pragma warning restore 612, 618
         }

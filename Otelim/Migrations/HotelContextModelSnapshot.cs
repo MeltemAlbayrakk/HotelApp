@@ -89,6 +89,9 @@ namespace Otelim.Migrations
                     b.Property<DateTime>("ExitDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("HotelId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("PaymentTypeId")
                         .IsRequired()
                         .HasColumnType("int");
@@ -96,10 +99,7 @@ namespace Otelim.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("smallmoney");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId1")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.Property<int>("numOfAdult")
@@ -107,9 +107,11 @@ namespace Otelim.Migrations
 
                     b.HasKey("ReservationId");
 
+                    b.HasIndex("HotelId");
+
                     b.HasIndex("PaymentTypeId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Reservations");
                 });
@@ -152,9 +154,6 @@ namespace Otelim.Migrations
                     b.Property<int>("UserGender")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId1")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserLname")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -170,15 +169,13 @@ namespace Otelim.Migrations
 
                     b.HasKey("UserId");
 
-                    b.HasIndex("UserId1");
-
                     b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Otelim.Models.Hotel", b =>
                 {
                     b.HasOne("Otelim.Models.Theme", "Theme")
-                        .WithMany("hotels")
+                        .WithMany("Hotels")
                         .HasForeignKey("ThemeId");
 
                     b.Navigation("Theme");
@@ -186,6 +183,10 @@ namespace Otelim.Migrations
 
             modelBuilder.Entity("Otelim.Models.Reservation", b =>
                 {
+                    b.HasOne("Otelim.Models.Hotel", "Hotel")
+                        .WithMany()
+                        .HasForeignKey("HotelId");
+
                     b.HasOne("Otelim.Models.PaymentType", "PaymentType")
                         .WithMany("reservations")
                         .HasForeignKey("PaymentTypeId")
@@ -194,20 +195,13 @@ namespace Otelim.Migrations
 
                     b.HasOne("Otelim.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Hotel");
 
                     b.Navigation("PaymentType");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Otelim.Models.User", b =>
-                {
-                    b.HasOne("Otelim.Models.User", null)
-                        .WithMany("Users")
-                        .HasForeignKey("UserId1");
                 });
 
             modelBuilder.Entity("Otelim.Models.PaymentType", b =>
@@ -217,12 +211,7 @@ namespace Otelim.Migrations
 
             modelBuilder.Entity("Otelim.Models.Theme", b =>
                 {
-                    b.Navigation("hotels");
-                });
-
-            modelBuilder.Entity("Otelim.Models.User", b =>
-                {
-                    b.Navigation("Users");
+                    b.Navigation("Hotels");
                 });
 #pragma warning restore 612, 618
         }

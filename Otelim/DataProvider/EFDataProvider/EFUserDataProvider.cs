@@ -1,22 +1,38 @@
-﻿using Otelim.Models;
+﻿using Otelim.Context;
+using Otelim.Models;
 
 namespace Otelim.DataProvider.EFDataProvider
 {
     public class EFUserDataProvider : IGenericDataProvider<User>
     {
-        public void Add(User t)
+        public void Add(User user)
         {
-            throw new NotImplementedException();
+            using (var ctx = new HotelContext())
+            {
+                ctx.Users.Add(user);
+                ctx.SaveChanges();
+            }
         }
 
-        public void Delete(User t)
+        public void Delete(User user)
         {
-            throw new NotImplementedException();
+            using (var ctx= new HotelContext())
+            {
+                ctx.Users.Remove(user);
+                ctx.SaveChanges();
+            }
+                
         }
 
         public List<User> GetList()
         {
-            throw new NotImplementedException();
+            using (var ctx = new HotelContext())
+            {
+                var result = ctx.Users.ToList();
+                return result;
+
+            } 
+                
         }
     }
 }

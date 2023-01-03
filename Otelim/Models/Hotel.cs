@@ -6,6 +6,7 @@ namespace Otelim.Models
     public class Hotel
     {
         [Key]
+        [ForeignKey("HotelId")]
         public int HotelId { get; set; }
 
         [Required]
@@ -22,6 +23,7 @@ namespace Otelim.Models
         [Required]
         [Column(TypeName ="smallmoney")]
         public float Price { get; set;}
+
 
         [ForeignKey("ThemeId")]
         public int? ThemeId { get; set; }

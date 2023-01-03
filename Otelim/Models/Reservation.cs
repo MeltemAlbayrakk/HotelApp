@@ -9,8 +9,12 @@ namespace Otelim.Models
         public int ReservationId { get; set; }
 
         [ForeignKey("UserId")]
-        public string? UserId { get; set; }
+        public int? UserId { get; set; }
         public virtual User User { get; set; }
+
+        [ForeignKey("HotelId")]
+        public int? HotelId { get; set; }
+        public virtual Hotel Hotel { get; set; }
 
         public int numOfAdult { get; set; }
 
@@ -26,6 +30,9 @@ namespace Otelim.Models
 
         [Column(TypeName = "smallmoney")]
         public float Price { get; set; }
+
+
+
 
 
 

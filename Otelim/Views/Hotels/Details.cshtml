@@ -1,11 +1,11 @@
 ﻿@model Otelim.Models.Hotel
 
 @{
-    ViewData["Title"] = "GetDetails";
+    ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>GetDetails</h1>
+<h1>Details</h1>
 
 <div>
     <h4>Hotel</h4>
@@ -51,5 +51,7 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.HotelId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back to List</a>|
+    <a asp-controller="Reservations" asp-action="Create">Create Reservation</a>
+    
 </div>

@@ -18,16 +18,14 @@
                 <a class="navbar-brand p-1" asp-controller="Home" asp-action="Index">Otelim</a>
                 <ul class="navbar-nav  mt-2 mt-lg-0">
                     <li class="nav-item active">
-                        <a class="nav-link" asp-controller="Hotel" asp-action="GetList">Tüm Oteller </a>
+                        <a class="nav-link" asp-controller="Hotels" asp-action="Index">Tüm Oteller </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Temalar</a>
+                    
+					<li class="nav-item ">
+						<a class="nav-link" href="">Giriş Yap</a>
 					</li>
 					<li class="nav-item ">
-						<a class="nav-link" href="#">Giriş Yap</a>
-					</li>
-					<li class="nav-item ">
-						<a class="nav-link" href="#">Kayıt ol</a>
+                        <a class="nav-link" asp-controller="Users" asp-action="Create">Kayıt ol</a>
 					</li>
 
                 </ul >

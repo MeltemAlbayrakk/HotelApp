@@ -8,12 +8,14 @@ namespace Otelim.Models
         [Key]
         public int ReservationId { get; set; }
 
-        [ForeignKey("UserId")]
+
         public int? UserId { get; set; }
+        [ForeignKey("UserId")]
         public virtual User User { get; set; }
 
-        [ForeignKey("HotelId")]
+
         public int? HotelId { get; set; }
+        [ForeignKey("HotelId")]
         public virtual Hotel Hotel { get; set; }
 
         public int numOfAdult { get; set; }
@@ -22,10 +24,11 @@ namespace Otelim.Models
         public DateTime ArrivalDate { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime ExitDate { get; set;}
+        public DateTime ExitDate { get; set; }
 
-        [ForeignKey("PaymentTypeId")]
+
         public int? PaymentTypeId { get; set; }
+        [ForeignKey("PaymentTypeId")]
         public virtual PaymentType PaymentType { get; set; }
 
         [Column(TypeName = "smallmoney")]

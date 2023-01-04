@@ -1,33 +1,41 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Operations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Otelim.Context;
-using Otelim.DataProvider;
 using Otelim.Models;
-using System.Net;
 
 namespace Otelim.Controllers
 {
-    public class HotelController : Controller
+    public class HotelsController : Controller
     {
-
-
         private readonly HotelContext _context;
 
-        public HotelController(HotelContext context)
+        public HotelsController(HotelContext context)
         {
             _context = context;
         }
 
+        // GET: Hotels
+        public async Task<IActionResult> Index()
+        {
+            var hotelContext = _context.Hotels.Include(h => h.Theme);
+            return View(await hotelContext.ToListAsync());
+        }
 
+        // GET: Hotels/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if (id == null || _context.Hotels == null)
             {
                 return NotFound();
             }
 
             var hotel = await _context.Hotels
+                .Include(h => h.Theme)
                 .FirstOrDefaultAsync(m => m.HotelId == id);
             if (hotel == null)
             {
@@ -40,29 +48,30 @@ namespace Otelim.Controllers
         // GET: Hotels/Create
         public IActionResult Create()
         {
+            ViewData["ThemeId"] = new SelectList(_context.Themes, "ThemeId", "ThemeId");
             return View();
         }
 
-
+        // POST: Hotels/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("HotelId","HotelName", "HotelDescription", "HotelAddress", "Point", "Price","ThemeId")] Hotel hotel)
+        public async Task<IActionResult> Create([Bind("HotelId,HotelName,HotelDescription,HotelAddress,Point,Price,ThemeId")] Hotel hotel)
         {
-          
-            if (ModelState.IsValid)
-            {
-                
+              
                 _context.Add(hotel);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(GetList));
-            }
-            return View(hotel);
+                return RedirectToAction(nameof(Index));
+            
+            //ViewData["ThemeId"] = new SelectList(_context.Themes, "ThemeId", "ThemeId", hotel.ThemeId);
+            //return View(hotel);
         }
 
-        // GET: Students/Edit/5
+        // GET: Hotels/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            if (id == null || _context.Hotels == null)
             {
                 return NotFound();
             }
@@ -72,27 +81,28 @@ namespace Otelim.Controllers
             {
                 return NotFound();
             }
+            ViewData["ThemeId"] = new SelectList(_context.Themes, "ThemeId", "ThemeId", hotel.ThemeId);
             return View(hotel);
         }
 
-        // POST: Students/Edit/5
+        // POST: Hotels/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("HotelId", "HotelName", "HotelDescription", "HotelAddress", "Point", "Price", "ThemeId")] Hotel hotel)
+        public async Task<IActionResult> Edit(int id, [Bind("HotelId,HotelName,HotelDescription,HotelAddress,Point,Price,ThemeId")] Hotel hotel)
         {
             if (id != hotel.HotelId)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            else
             {
                 try
                 {
                     _context.Update(hotel);
                     await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -104,21 +114,29 @@ namespace Otelim.Controllers
                     {
                         throw;
                     }
+                
+                
                 }
-                return RedirectToAction(nameof(Index));
+                ViewData["ThemeId"] = new SelectList(_context.Themes, "ThemeId", "ThemeId", hotel.ThemeId);
+                return View(hotel);
             }
-            return View(hotel);
+
+
+            
+               
+            
         }
 
-        // GET: Students/Delete/5
+        // GET: Hotels/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            if (id == null || _context.Hotels == null)
             {
                 return NotFound();
             }
 
             var hotel = await _context.Hotels
+                .Include(h => h.Theme)
                 .FirstOrDefaultAsync(m => m.HotelId == id);
             if (hotel == null)
             {
@@ -128,25 +146,28 @@ namespace Otelim.Controllers
             return View(hotel);
         }
 
-        // POST: Students/Delete/5
+        // POST: Hotels/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (_context.Hotels == null)
+            {
+                return Problem("Entity set 'HotelContext.Hotels'  is null.");
+            }
             var hotel = await _context.Hotels.FindAsync(id);
-            _context.Hotels.Remove(hotel);
+            if (hotel != null)
+            {
+                _context.Hotels.Remove(hotel);
+            }
+            
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> GetList()
-        {
-            return View(await _context.Hotels.ToListAsync());
-        }
-
         private bool HotelExists(int id)
         {
-            return _context.Hotels.Any(e => e.HotelId == id);
+          return _context.Hotels.Any(e => e.HotelId == id);
         }
     }
 }

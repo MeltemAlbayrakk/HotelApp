@@ -50,34 +50,22 @@ namespace Otelim.Controllers
         // GET: Reservations/Create
         public IActionResult Create()
         {
-            ViewData["HotelId"] = new SelectList(_context.Hotels, "HotelId", "HotelAddress");
+            ViewData["HotelId"] = new SelectList(_context.Hotels, "HotelId", "HotelName");
             ViewData["PaymentTypeId"] = new SelectList(_context.PaymentTypes, "PaymentTypeId", "PaymentTypeName");
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserEmail");
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId");
             return View();
         }
 
-        // POST: Reservations/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReservationId,UserId,HotelId,numOfAdult,ArrivalDate,ExitDate,PaymentTypeId,Price")] Reservation reservation)
+        public async Task<IActionResult> Create([Bind("ReservationId,UserId,HotelId,numOfAdult,ArrivalDate,ExitDate,PaymentTypeId")] Reservation reservation)
         {
-
-            //reservation.User = _context.Users.FirstOrDefault(p => p.UserId == reservation.UserId);
-            //reservation.Hotel = _context.Hotels.FirstOrDefault(p => p.HotelId == reservation.HotelId);
-            //reservation.PaymentType = _context.PaymentTypes.FirstOrDefault(p => p.PaymentTypeId == reservation.PaymentTypeId);
             
-            
-                reservation.Price = _context.Hotels.FirstOrDefault(p => p.HotelId == reservation.HotelId).Price;
-                _context.Add(reservation);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Details));
-            
-            //ViewData["HotelId"] = new SelectList(_context.Hotels, "HotelId", "HotelAddress", reservation.HotelId);
-            //ViewData["PaymentTypeId"] = new SelectList(_context.PaymentTypes, "PaymentTypeId", "PaymentTypeId", reservation.PaymentTypeId);
-            //ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserEmail", reservation.UserId);
-            //return View(reservation);
+            reservation.Price =  _context.Hotels.FirstOrDefault(p => p.HotelId == reservation.HotelId).Price*reservation.numOfAdult;
+            reservation.UserId =  _context.Users.FirstOrDefault(p => p.UserId == reservation.UserId).UserId;
+            _context.Add(reservation);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Reservations/Edit/5
@@ -93,6 +81,8 @@ namespace Otelim.Controllers
             {
                 return NotFound();
             }
+            reservation.Price = _context.Hotels.FirstOrDefault(p => p.HotelId == reservation.HotelId).Price * reservation.numOfAdult;
+            reservation.UserId = _context.Users.FirstOrDefault(p => p.UserId == reservation.UserId).UserId;
             ViewData["HotelId"] = new SelectList(_context.Hotels, "HotelId", "HotelAddress", reservation.HotelId);
             ViewData["PaymentTypeId"] = new SelectList(_context.PaymentTypes, "PaymentTypeId", "PaymentTypeId", reservation.PaymentTypeId);
             ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserEmail", reservation.UserId);

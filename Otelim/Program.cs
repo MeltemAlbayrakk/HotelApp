@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Otelim.Context;
 using Otelim.DataProvider;
 using Otelim.DataProvider.EFDataProvider;
@@ -19,8 +22,6 @@ builder.Services.AddTransient<IGenericDataProvider<PaymentType>, EFPaymentTypeDa
 builder.Services.AddTransient<IGenericDataProvider<Reservation>, EFReservationDataProvider>(); 
 builder.Services.AddTransient<IGenericDataProvider<Theme>, EFThemeDataProvider>();
 builder.Services.AddTransient<IGenericDataProvider<User>, EFUserDataProvider>();
-
-
 
 var app = builder.Build();
 
@@ -43,6 +44,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Hotels}/{action=Index}/{id?}");
 
 app.Run();

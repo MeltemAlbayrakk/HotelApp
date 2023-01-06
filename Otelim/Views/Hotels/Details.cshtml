@@ -5,10 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>Detaylar</h1>
 
 <div>
-    <h4>Hotel</h4>
+    <h4>Otel</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -50,8 +50,8 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.HotelId">Edit</a> |
-    <a asp-action="Index">Back to List</a>|
-    <a asp-controller="Reservations" asp-action="Create">Create Reservation</a>
+    <a asp-action="Edit" asp-route-id="@Model?.HotelId">Güncelle</a> |
+    <a asp-action="Index">Listeye Dön</a>|
+    <a asp-controller="Reservations" asp-action="Create">Rezervasyon Oluştur</a>
     
 </div>

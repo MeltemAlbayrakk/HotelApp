@@ -53,8 +53,7 @@ namespace Otelim.Controllers
         }
 
         // POST: Hotels/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("HotelId,HotelName,HotelDescription,HotelAddress,Point,Price,ThemeId")] Hotel hotel)
@@ -117,8 +116,7 @@ namespace Otelim.Controllers
                 
                 
                 }
-                ViewData["ThemeId"] = new SelectList(_context.Themes, "ThemeId", "ThemeId", hotel.ThemeId);
-                return View(hotel);
+               
             }
 
 
